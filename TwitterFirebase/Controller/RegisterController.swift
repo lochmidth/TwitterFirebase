@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class RegisterController: UIViewController {
     
     //MARK: - Properties
     
+    weak var delegate: AuthenticationDelegate?
+    
     private let imagePicker = UIImagePickerController()
+    private var profileImage: UIImage?
     
     private lazy var plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -49,7 +54,6 @@ class RegisterController: UIViewController {
     
     private let usernameTextField: UITextField = {
         let tf = Utilities().textField(withPlaceholder: "Username")
-        tf.isSecureTextEntry = true
         return tf
     }()
     
@@ -86,14 +90,32 @@ class RegisterController: UIViewController {
     }
     
     @objc func handleRegisteration() {
-        print("DEBUG: Handle Sign up here...")
+        guard let profileImage = profileImage else {
+            showMessage(withTitle: "Oops!", message: "No profile picture added.")
+            return
+        }
+        
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let fullname = fullnameTextField.text else { return }
+        guard let username = usernameTextField.text else { return }
+        
+        AuthService.shared.registerUser(withCredentials: AuthCredentials(email: email, password: password, fullname: fullname, username: username,
+                                                                         profileImage: profileImage)) { error, ref in
+//            guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
+//            guard let tab = window.rootViewController as? MainTabController else { return }
+//
+//            tab.authenticateUserAndConfigureUI()
+//
+//            self.dismiss(animated: true)
+            
+            self.delegate?.authenticationDidComplete()
+        }
     }
     
     @objc func handleShowLogin() {
         navigationController?.popViewController(animated: true)
     }
-    
-    //MARK: - API
     
     //MARK: - Helpers
     
@@ -130,6 +152,7 @@ class RegisterController: UIViewController {
 extension RegisterController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let profileImage = info[.editedImage] as? UIImage else { return }
+        self.profileImage = profileImage
         
         plusPhotoButton.layer.cornerRadius = 128 / 2
         plusPhotoButton.layer.masksToBounds = true

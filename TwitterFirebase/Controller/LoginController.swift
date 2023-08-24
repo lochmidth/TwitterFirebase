@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol AuthenticationDelegate: AnyObject {
+    func authenticationDidComplete()
+}
+
 class LoginController: UIViewController {
     
     //MARK: - Properties
+    
+    weak var delegate: AuthenticationDelegate?
     
     private let logoImageView: UIImageView = {
         let iv = UIImageView()
@@ -64,11 +70,30 @@ class LoginController: UIViewController {
     //MARK: - Actions
     
     @objc func handleLogin() {
-        print("DEBUG: Login pressed...")
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        
+        AuthService.shared.logUserIn(withEmail: email, password: password) { Result, error in
+            if let error = error {
+                self.showMessage(withTitle: "Oops!", message: error.localizedDescription)
+                self.passwordTextField.text = ""
+                return
+            }
+            
+//            guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
+//            guard let tab = window.rootViewController as? MainTabController else { return }
+//
+//            tab.authenticateUserAndConfigureUI()
+//
+//            self.dismiss(animated: true)
+            
+            self.delegate?.authenticationDidComplete()
+        }
     }
     
     @objc func handleShowSignUp() {
         let controller = RegisterController()
+        controller.delegate = delegate
         navigationController?.pushViewController(controller, animated: true)
     }
     
