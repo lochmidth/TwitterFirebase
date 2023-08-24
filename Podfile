@@ -12,6 +12,10 @@ target 'TwitterFirebase' do
       pod 'FirebaseStorage'
       pod 'FirebaseMessaging'
       pod 'FirebaseAuth'
+      pod 'ActiveLabel'
+      pod 'SDWebImage'
+      pod 'JGProgressHUD'
+      pod 'YPImagePicker'
 
 end
 

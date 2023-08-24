@@ -12,6 +12,17 @@ class MainTabController: UITabBarController {
     
     //MARK: - Properties
     
+    var user: User? {
+        didSet {
+//            guard let nav = viewControllers?[0] as? UINavigationController else { return }
+//            guard let feed = nav.viewControllers.first as? FeedController else { return }
+//
+//            feed.user = user
+            guard let user = user else { return }
+            configureViewControllers(withUser: user)
+        }
+    }
+    
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -27,13 +38,20 @@ class MainTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        logUserOut()
+//        logUserOut()
         view.backgroundColor = .twitterBlue
         authenticateUserAndConfigureUI()
         
     }
     
     //MARK: - API
+    
+    func fetchUser() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        UserService.shared.fetchUser(withUid: uid) { user in
+            self.user = user
+        }
+    }
     
     func authenticateUserAndConfigureUI() {
         if Auth.auth().currentUser == nil {
@@ -45,8 +63,9 @@ class MainTabController: UITabBarController {
                 self.present(nav, animated: false)
             }
         } else {
-            configureViewControllers()
-            configureTabBar()
+            fetchUser()
+            guard let user = user else { return }
+            configureViewControllers(withUser: user)
             configureUI()
         }
     }
@@ -72,11 +91,17 @@ class MainTabController: UITabBarController {
         actionButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
         actionButton.layer.cornerRadius = 56 / 2
         
+        let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .white
+            tabBar.standardAppearance = appearance
+            tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+        
     }
     
-    func configureViewControllers() {
+    func configureViewControllers(withUser user: User) {
         
-        let feed = templateNavigationController(image: UIImage(named: "home_unselected"), rootViewController: FeedController())
+        let feed = templateNavigationController(image: UIImage(named: "home_unselected"), rootViewController: FeedController(user: user))
         
         let explore = templateNavigationController(image: UIImage(named: "search_unselected"), rootViewController: ExploreController())
         
@@ -95,14 +120,6 @@ class MainTabController: UITabBarController {
         nav.navigationBar.tintColor = .white
         return nav
     }
-    
-    func configureTabBar() {
-        let appearance = UITabBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .white
-            tabBar.standardAppearance = appearance
-            tabBar.scrollEdgeAppearance = tabBar.standardAppearance
-    }
 }
 
 //MARK: - AuthenticationDelegate
@@ -110,9 +127,7 @@ class MainTabController: UITabBarController {
 extension MainTabController: AuthenticationDelegate {
     func authenticationDidComplete() {
 //        showLoader(false)
-//        fetchUser()
-        configureViewControllers()
-        configureTabBar()
+        fetchUser()
         configureUI()
         self.dismiss(animated: true)
     }
