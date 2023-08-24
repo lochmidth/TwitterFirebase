@@ -1,12 +1,54 @@
 //
 //  Extensions.swift
-//  TwitterFirebase
+//  InstagramFirestone
 //
-//  Created by Alphan Ogün
-//
+//  Created by Alphan Ogün on 1.07.2023.
 //
 
 import UIKit
+
+extension UIViewController {
+//    static let hud = JGProgressHUD(style: .dark)
+//    func configureGradientLayer() {
+//        let gradiant = CAGradientLayer()
+//        gradiant.colors = [UIColor.systemPurple.cgColor, UIColor.systemBlue.cgColor]
+//        gradiant.locations = [0, 1]
+//        view.layer.addSublayer(gradiant)
+//        gradiant.frame = view.frame
+//    }
+//
+//    func showLoader(_ show: Bool) {
+//        view.endEditing(true)
+//
+//        if show {
+//            UIViewController.hud.show(in: view)
+//        } else {
+//            UIViewController.hud.dismiss()
+//        }
+//    }
+    
+    func showMessage(withTitle title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true)
+    }
+}
+
+extension UIButton {
+    
+    func attributedTitle(firstPart: String, secondPart: String) {
+        
+        let atts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(white: 1, alpha: 0.87), .font: UIFont.systemFont(ofSize: 16)]
+        let attributedTitle = NSMutableAttributedString(string: "\(firstPart) ", attributes: atts)
+        
+        let boldAtts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(white: 1, alpha: 0.87), .font: UIFont.boldSystemFont(ofSize: 16)]
+        attributedTitle.append(NSAttributedString(string: secondPart, attributes: boldAtts))
+        
+        setAttributedTitle(attributedTitle, for: .normal)
+        
+        titleLabel?.adjustsFontSizeToFitWidth = true
+    }
+}
 
 extension UIView {
     func anchor(top: NSLayoutYAxisAnchor? = nil,
@@ -62,24 +104,36 @@ extension UIView {
         }
     }
     
-    func centerY(inView view: UIView, leftAnchor: NSLayoutXAxisAnchor? = nil, paddingLeft: CGFloat? = nil, constant: CGFloat? = 0) {
+    func centerY(inView view: UIView, leftAnchor: NSLayoutXAxisAnchor? = nil,
+                 paddingLeft: CGFloat = 0, constant: CGFloat = 0) {
+        
         translatesAutoresizingMaskIntoConstraints = false
+        centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constant).isActive = true
         
-        centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constant!).isActive = true
-        
-        if let leftAnchor = leftAnchor, let padding = paddingLeft {
-            self.leftAnchor.constraint(equalTo: leftAnchor, constant: padding).isActive = true
+        if let left = leftAnchor {
+            anchor(left: left, paddingLeft: paddingLeft)
         }
     }
     
-    func setDimensions(width: CGFloat, height: CGFloat) {
+    func setDimensions(height: CGFloat, width: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: height).isActive = true
         widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    func setHeight(_ height: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    func addConstraintsToFillView(_ view: UIView) {
+    func setWidth(_ width: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
+        widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    func fillSuperview() {
+        translatesAutoresizingMaskIntoConstraints = false
+        guard let view = superview else { return }
         anchor(top: view.topAnchor, left: view.leftAnchor,
                bottom: view.bottomAnchor, right: view.rightAnchor)
     }
