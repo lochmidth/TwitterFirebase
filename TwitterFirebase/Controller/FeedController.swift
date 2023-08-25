@@ -12,11 +12,7 @@ class FeedController: UIViewController {
     
     //MARK: - Properties
     
-    var user: User? {
-        didSet {
-//            print("DEBUG: Did set User in feed controller. \n \(user?.profileImageUrl)")
-        }
-    }
+    var user: User?
     
     //MARK: - Lifecycle
     
@@ -31,9 +27,8 @@ class FeedController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         
-        configureLeftBarButton()
+        configureUI()
     }
     
     //MARK: - Helpers
@@ -43,7 +38,10 @@ class FeedController: UIViewController {
         
         let imageView = UIImageView(image: UIImage(named: "twitter_logo_blue"))
         imageView.contentMode = .scaleAspectFit
+        imageView.setDimensions(height: 44, width: 44)
         navigationItem.titleView = imageView
+        
+        configureLeftBarButton()
     }
     
     func configureLeftBarButton() {
