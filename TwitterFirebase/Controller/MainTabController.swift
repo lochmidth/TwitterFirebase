@@ -14,12 +14,9 @@ class MainTabController: UITabBarController {
     
     var user: User? {
         didSet {
-//            guard let nav = viewControllers?[0] as? UINavigationController else { return }
-//            guard let feed = nav.viewControllers.first as? FeedController else { return }
-//
-//            feed.user = user
             guard let user = user else { return }
             configureViewControllers(withUser: user)
+            configureUI()
         }
     }
     
@@ -34,12 +31,13 @@ class MainTabController: UITabBarController {
     }()
     
     //MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        logUserOut()
+        //        logUserOut()
         view.backgroundColor = .twitterBlue
+        fetchUser()
         authenticateUserAndConfigureUI()
         
     }
@@ -62,11 +60,6 @@ class MainTabController: UITabBarController {
                 nav.modalPresentationStyle = .fullScreen
                 self.present(nav, animated: false)
             }
-        } else {
-            fetchUser()
-            guard let user = user else { return }
-            configureViewControllers(withUser: user)
-            configureUI()
         }
     }
     
@@ -81,22 +74,25 @@ class MainTabController: UITabBarController {
     //MARK: - Actions
     
     @objc func handleActionButtonTapped() {
-        print("DEBUG: Action button pressed...")
+        guard let user = user else { return }
+        let controller = UINavigationController(rootViewController: UploadTweetController(user: user))
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true)
     }
     
     //MARK: - Helpers
     
     func configureUI() {
+        
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+        
         view.addSubview(actionButton)
         actionButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
         actionButton.layer.cornerRadius = 56 / 2
-        
-        let appearance = UITabBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .white
-            tabBar.standardAppearance = appearance
-            tabBar.scrollEdgeAppearance = tabBar.standardAppearance
-        
     }
     
     func configureViewControllers(withUser user: User) {
@@ -126,9 +122,8 @@ class MainTabController: UITabBarController {
 
 extension MainTabController: AuthenticationDelegate {
     func authenticationDidComplete() {
-//        showLoader(false)
+        //        showLoader(false)
         fetchUser()
-        configureUI()
         self.dismiss(animated: true)
     }
 }

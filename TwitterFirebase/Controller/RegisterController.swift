@@ -91,7 +91,7 @@ class RegisterController: UIViewController {
     
     @objc func handleRegisteration() {
         guard let profileImage = profileImage else {
-            showMessage(withTitle: "Oops!", message: "No profile picture added.")
+            showMessage(withTitle: "Oops!", message: "No profile picture selected.")
             return
         }
         
@@ -102,12 +102,7 @@ class RegisterController: UIViewController {
         
         AuthService.shared.registerUser(withCredentials: AuthCredentials(email: email, password: password, fullname: fullname, username: username,
                                                                          profileImage: profileImage)) { error, ref in
-//            guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
-//            guard let tab = window.rootViewController as? MainTabController else { return }
-//
-//            tab.authenticateUserAndConfigureUI()
-//
-//            self.dismiss(animated: true)
+
             
             self.delegate?.authenticationDidComplete()
         }
