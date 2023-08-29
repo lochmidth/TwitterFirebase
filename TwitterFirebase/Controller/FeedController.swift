@@ -40,7 +40,13 @@ class FeedController: UICollectionViewController {
         configureLeftBarButton()
     }
     
-    //MARK: API
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    //MARK: - API
     
     func fetchTweets() {
         TweetService.shared.fetchTweets { tweets in
@@ -86,6 +92,8 @@ extension FeedController {
         
         cell.viewModel = TweetViewModel(tweet: tweets[indexPath.row])
         
+        cell.delegate = self
+        
         return cell
     }
 }
@@ -95,5 +103,16 @@ extension FeedController {
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 120)
+    }
+}
+
+//MARK: - TweetCellDelegate
+
+extension FeedController: TweetCellDelegate {
+    func cell(_ cell: TweetCell, wantsToShowProfileFor uid: String) {
+        UserService.shared.fetchUser(withUid: uid) { user in
+            let controller = ProfileController(user: user)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }

@@ -10,16 +10,15 @@ import UIKit
 struct TweetViewModel {
     
     var tweet: Tweet
-    var user: User
     
-    var profileImageUrl: URL? { return user.profileImageUrl }
+    var profileImageUrl: URL? { return tweet.user.profileImageUrl }
     
     var captionText: String { return tweet.caption }
     
     var userInfoText: NSAttributedString {
-        let title = NSMutableAttributedString(string: user.fullname, attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
+        let title = NSMutableAttributedString(string: tweet.user.fullname, attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
         
-        title.append(NSAttributedString(string: " @\(user.username)", attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.lightGray]))
+        title.append(NSAttributedString(string: " @\(tweet.user.username)", attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.lightGray]))
 
         title.append(NSAttributedString(string: " · \(timestamp)", attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.lightGray]))
         
@@ -37,7 +36,6 @@ struct TweetViewModel {
     
     init(tweet: Tweet) {
         self.tweet = tweet
-        self.user = tweet.user
     }
     
     
