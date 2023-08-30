@@ -15,6 +15,10 @@ struct User {
     let username: String
     let uid: String
     
+    var isFollowed = false
+    
+    var stats: UserStats?
+    
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
     
     init(uid: String, dictionary: [String: Any]) {
@@ -28,4 +32,10 @@ struct User {
             self.profileImageUrl = url
         }
     }
+}
+
+struct UserStats {
+    let followers: Int
+    let following: Int
+    let tweets: Int
 }

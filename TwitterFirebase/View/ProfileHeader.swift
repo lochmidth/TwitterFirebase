@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileHeaderDelegate: AnyObject {
     func handleDismissal(_ header: ProfileHeader)
+    func handleEditProfileFollow(_ header: ProfileHeader )
 }
 
 class ProfileHeader: UICollectionReusableView {
@@ -169,7 +170,7 @@ class ProfileHeader: UICollectionReusableView {
     }
     
     @objc func handleEditProfileFollow() {
-        print("DEBUG: Handle PRofile edit, follow and unfollow here")
+        delegate?.handleEditProfileFollow(self)
     }
     
     @objc func handleFollowingTapped() {
@@ -195,8 +196,8 @@ class ProfileHeader: UICollectionReusableView {
         editProfileFollowButton.backgroundColor = viewModel.actionButtonBackgroundColor
         editProfileFollowButton.setTitleColor(viewModel.actionButtonTextColor, for: .normal)
         
-        followingLabel.attributedText = viewModel.followingsString
-        followersLabel.attributedText = viewModel.followersString
+        followingLabel.attributedText = viewModel.followingStatText
+        followersLabel.attributedText = viewModel.followersStatText
     }
 }
 

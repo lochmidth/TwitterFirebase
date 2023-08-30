@@ -36,32 +36,40 @@ struct ProfileHeaderViewModel {
     var actionButtonTitle: String {
         if user.isCurrentUser {
             return "Edit Profile"
-        } else {
-            return "Follow"
         }
+        
+        return user.isFollowed ? "Following" : "Follow"
     }
     
     var actionButtonBackgroundColor: UIColor {
-        return user.isCurrentUser ? .white : .twitterBlue
+        if user.isCurrentUser {
+            return user.isCurrentUser ? .white : .twitterBlue
+        } else {
+            return user.isFollowed ? .white : .twitterBlue
+        }
     }
     
     var actionButtonTextColor: UIColor {
-        return user.isCurrentUser ? .twitterBlue : .white
+        if user.isCurrentUser {
+            return user.isCurrentUser ? .twitterBlue : .white
+        } else {
+            return user.isFollowed ? .twitterBlue : .white
+        }
     }
     
-    var followersString: NSAttributedString? {
-        return attributedText(withValue: 2, text: "Followers")
+    var followersStatText: NSAttributedString? {
+        return attributedStatText(withValue: user.stats?.followers ?? 0, text: "followers")
     }
     
-    var followingsString: NSAttributedString? {
-        return attributedText(withValue: 0, text: "Followings")
+    var followingStatText: NSAttributedString? {
+        return attributedStatText(withValue: user.stats?.following ?? 0, text: "following")
     }
     
     init(user: User) {
         self.user = user
     }
     
-    fileprivate func attributedText(withValue value: Int, text: String) -> NSAttributedString {
+    fileprivate func attributedStatText(withValue value: Int, text: String) -> NSAttributedString {
         let attributedTitle = NSMutableAttributedString(string: "\(value)",
                                                         attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
         attributedTitle.append(NSAttributedString(string: " \(text)",

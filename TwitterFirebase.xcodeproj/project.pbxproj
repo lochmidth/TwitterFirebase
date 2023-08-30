@@ -19,6 +19,8 @@
 		C209A3512A9D2D9500BEF6DB /* ProfileFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C209A3502A9D2D9500BEF6DB /* ProfileFilterView.swift */; };
 		C209A3532A9D306000BEF6DB /* ProfileFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C209A3522A9D306000BEF6DB /* ProfileFilterCell.swift */; };
 		C209A3552A9D488200BEF6DB /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C209A3542A9D488200BEF6DB /* ProfileHeaderViewModel.swift */; };
+		C209A3572A9F60BC00BEF6DB /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C209A3562A9F60BC00BEF6DB /* UserCell.swift */; };
+		C209A3592A9F706400BEF6DB /* UserCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C209A3582A9F706400BEF6DB /* UserCellViewModel.swift */; };
 		C258ED8B2A97C80F0065F97A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C258ED8A2A97C80F0065F97A /* UserService.swift */; };
 		C258ED8D2A97CC210065F97A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C258ED8C2A97CC210065F97A /* User.swift */; };
 		C29C6A7C2A97949C00986411 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C29C6A7B2A97949C00986411 /* GoogleService-Info.plist */; };
@@ -56,6 +58,8 @@
 		C209A3502A9D2D9500BEF6DB /* ProfileFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterView.swift; sourceTree = "<group>"; };
 		C209A3522A9D306000BEF6DB /* ProfileFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterCell.swift; sourceTree = "<group>"; };
 		C209A3542A9D488200BEF6DB /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
+		C209A3562A9F60BC00BEF6DB /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		C209A3582A9F706400BEF6DB /* UserCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellViewModel.swift; sourceTree = "<group>"; };
 		C258ED8A2A97C80F0065F97A /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		C258ED8C2A97CC210065F97A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C29C6A7B2A97949C00986411 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 			children = (
 				C209A34A2A9A304B00BEF6DB /* TweetViewModel.swift */,
 				C209A3542A9D488200BEF6DB /* ProfileHeaderViewModel.swift */,
+				C209A3582A9F706400BEF6DB /* UserCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 				C209A34E2A9CC1CB00BEF6DB /* ProfileHeader.swift */,
 				C209A3502A9D2D9500BEF6DB /* ProfileFilterView.swift */,
 				C209A3522A9D306000BEF6DB /* ProfileFilterCell.swift */,
+				C209A3562A9F60BC00BEF6DB /* UserCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -339,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2F1EAED2A96646A0098C1BB /* RegisterController.swift in Sources */,
+				C209A3592A9F706400BEF6DB /* UserCellViewModel.swift in Sources */,
 				C209A3452A98F4A000BEF6DB /* TweetService.swift in Sources */,
 				C2F1EAE42A962BED0098C1BB /* NotificationsController.swift in Sources */,
 				C2F1EAEF2A966C530098C1BB /* Utilities.swift in Sources */,
@@ -358,6 +365,7 @@
 				C209A34B2A9A304B00BEF6DB /* TweetViewModel.swift in Sources */,
 				C29C6A822A97A16E00986411 /* ImageUploader.swift in Sources */,
 				C2F1EAEA2A96637C0098C1BB /* LoginController.swift in Sources */,
+				C209A3572A9F60BC00BEF6DB /* UserCell.swift in Sources */,
 				C2F1EAE22A962BE30098C1BB /* ExploreController.swift in Sources */,
 				C209A3492A992EF300BEF6DB /* TweetCell.swift in Sources */,
 				C2F1EAC22A9628490098C1BB /* SceneDelegate.swift in Sources */,
@@ -515,6 +523,7 @@
 				DEVELOPMENT_TEAM = 6Y92LH56N8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwitterFirebase/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -544,6 +553,7 @@
 				DEVELOPMENT_TEAM = 6Y92LH56N8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TwitterFirebase/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

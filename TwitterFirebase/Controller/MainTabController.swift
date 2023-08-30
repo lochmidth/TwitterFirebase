@@ -36,7 +36,7 @@ class MainTabController: UITabBarController {
         super.viewDidLoad()
         
 //        logUserOut()
-        view.backgroundColor = .twitterBlue
+//        view.backgroundColor = .white
         fetchUser()
         authenticateUserAndConfigureUI()
         
