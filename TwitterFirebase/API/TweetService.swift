@@ -30,12 +30,6 @@ struct TweetService {
         }
     }
     
-//    func fetchTweets(completion: @escaping([Tweet]) -> Void) {
-//        var tweets = [Tweet]()
-//        
-//        
-//    }
-    
     func fetchTweets(forUser user: User? = nil, completion: @escaping([Tweet]) -> Void) {
         var tweets = [Tweet]()
         

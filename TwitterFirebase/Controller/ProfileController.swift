@@ -36,6 +36,8 @@ class ProfileController: UICollectionViewController {
         
         fetchTweets()
         configureUI()
+        checkIfUserIsFollowed()
+        fetchUserStats()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,9 +48,24 @@ class ProfileController: UICollectionViewController {
     
     //MARK: - API
     
+    func checkIfUserIsFollowed() {
+        UserService.shared.checkIfUserIsFollowed(uid: user.uid) { isFollowed in
+            self.user.isFollowed = isFollowed
+            self.collectionView.reloadData()
+        }
+    }
+    
     func fetchTweets() {
         TweetService.shared.fetchTweets(forUser: user) { tweets in
             self.tweets = tweets
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func fetchUserStats() {
+        UserService.shared.fetchUserStats(uid: user.uid) { stats in
+            self.user.stats = stats
+            self.collectionView.reloadData()
         }
     }
     
@@ -113,6 +130,27 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
 //MARK: - ProfileHeaderDelegate
 
 extension ProfileController: ProfileHeaderDelegate {
+    func handleEditProfileFollow(_ header: ProfileHeader) {
+        
+        if user.isCurrentUser {
+            showMessage(withTitle: "WIP", message: "Handle Edit Profile here...")
+        }
+        
+        else if user.isFollowed {
+            UserService.shared.unfollowUser(uid: user.uid) { error, ref in
+                self.user.isFollowed = false
+                self.collectionView.reloadData()
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            UserService.shared.followUser(uid: user.uid) { error, ref in
+                self.user.isFollowed = true
+                self.collectionView.reloadData()
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
     func handleDismissal(_ header: ProfileHeader) {
         navigationController?.popViewController(animated: true)
     }
