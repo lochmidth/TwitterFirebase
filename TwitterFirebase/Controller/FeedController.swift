@@ -98,21 +98,39 @@ extension FeedController {
     }
 }
 
+//MARK: - UICollectionViewDelegate
+
+extension FeedController {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = TweetController(tweet: tweets[indexPath.row])
+        navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
 //MARK: -  UICollectionViewDelegateFlowLayout
 
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 120)
+        let viewModel = TweetViewModel(tweet: tweets[indexPath.row])
+        let height = viewModel.size(forWidth: view.frame.width).height
+        return CGSize(width: view.frame.width, height: height + 75)
     }
 }
 
 //MARK: - TweetCellDelegate
 
 extension FeedController: TweetCellDelegate {
-    func cell(_ cell: TweetCell, wantsToShowProfileFor uid: String) {
-        UserService.shared.fetchUser(withUid: uid) { user in
-            let controller = ProfileController(user: user)
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
+    func handleProfileImageTapped(_ cell: TweetCell) {
+        guard let user = cell.viewModel?.tweet.user else { return }
+        let controller = ProfileController(user: user)
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func handleReplyTapped(_ cell: TweetCell) {
+        guard let tweet = cell.viewModel?.tweet else { return }
+        let controller = UploadTweetController(user: tweet.user, config: .reply(tweet))
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
 }
