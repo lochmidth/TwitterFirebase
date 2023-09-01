@@ -8,7 +8,8 @@
 import UIKit
 
 protocol TweetCellDelegate: AnyObject {
-    func cell(_ cell: TweetCell, wantsToShowProfileFor uid: String)
+    func handleProfileImageTapped(_ cell: TweetCell)
+    func handleReplyTapped(_ cell: TweetCell)
 }
 
 class TweetCell: UICollectionViewCell {
@@ -99,7 +100,7 @@ class TweetCell: UICollectionViewCell {
     //MARK: - Actions
     
     @objc func handleCommentTapped() {
-        print("DEBUG: Handle Comment here...")
+        delegate?.handleReplyTapped(self)
     }
     
     @objc func handleRetweetTapped() {
@@ -115,8 +116,7 @@ class TweetCell: UICollectionViewCell {
     }
     
     @objc func handleProfileImageTapped() {
-        guard let viewModel = viewModel else { return }
-        delegate?.cell(self, wantsToShowProfileFor: viewModel.tweet.uid)
+        delegate?.handleProfileImageTapped(self)
     }
     
     //MARK: - Helpers
