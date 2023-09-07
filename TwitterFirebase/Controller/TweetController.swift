@@ -12,7 +12,7 @@ private let headerIdentifier = "TweetHeader"
 
 class TweetController: UICollectionViewController {
     
-    //MARK: - Preperties
+    //MARK: - Properties
     
     private let tweet: Tweet
     private var actionSheetLauncher: ActionSheetLauncher!

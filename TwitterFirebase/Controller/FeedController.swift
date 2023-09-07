@@ -138,6 +138,9 @@ extension FeedController: TweetCellDelegate {
             cell.viewModel?.tweet.didLike.toggle()
             let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
             cell.viewModel?.tweet.likes = likes
+            
+            guard !tweet.didLike else { return }
+            NotificationService.shared.uploadNotification(type: .like, tweet: tweet)
         }
     }
     
