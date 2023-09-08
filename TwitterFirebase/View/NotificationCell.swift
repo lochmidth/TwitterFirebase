@@ -86,7 +86,7 @@ class NotificationCell: UITableViewCell {
     func configureUI() {
         selectionStyle = .none
         
-        addSubview(profileImageView)
+        contentView.addSubview(profileImageView)
         profileImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
         
         contentView.addSubview(followButton)
@@ -94,7 +94,7 @@ class NotificationCell: UITableViewCell {
         followButton.anchor(right: rightAnchor, paddingRight: 12, width: 92, height: 32)
         followButton.layer.cornerRadius = 32 / 2
         
-        addSubview(notificationLabel)
+        contentView.addSubview(notificationLabel)
         notificationLabel.centerY(inView: self)
         notificationLabel.anchor(left: profileImageView.rightAnchor, paddingLeft: 12)
     }

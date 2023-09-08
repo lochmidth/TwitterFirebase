@@ -38,6 +38,13 @@ class TweetController: UICollectionViewController {
         fetchReplies()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     //MARK: - API
     
     func fetchReplies() {
@@ -102,7 +109,7 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
         
         let viewModel = TweetViewModel(tweet: tweet)
         let captionHeight = viewModel.size(forWidth: view.frame.width).height
-        return CGSize(width: view.frame.width, height: captionHeight + 260)
+        return CGSize(width: view.frame.width, height: captionHeight + 240)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -111,7 +118,11 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
 }
 
 extension TweetController: TweetHeaderDelegate {
-   
+    func handleProfileImageTapped(_ header: TweetHeader) {
+        guard let user = header.viewModel?.tweet.user else { return }
+        let controller = ProfileController(user: user)
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
     
     func showActionSheet() {
         if tweet.user.isCurrentUser {
