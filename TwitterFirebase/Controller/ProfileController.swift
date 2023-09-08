@@ -71,14 +71,23 @@ class ProfileController: UICollectionViewController {
     
     func fetchTweets() {
         TweetService.shared.fetchTweets(forUser: user) { tweets in
-            self.tweets = tweets
+            self.tweets = tweets.sorted(by: {$0.timestamp > $1.timestamp })
+            self.checkIfUserLikedTweets()
             self.collectionView.reloadData()
         }
     }
     
     func fetchLikedTweets() {
         TweetService.shared.fetchLikes(forUser: user) { tweets in
-            self.likedTweets = tweets
+            self.likedTweets = tweets.sorted(by: {$0.timestamp > $1.timestamp })
+            self.checkIfUserLikedTweets()
+        }
+    }
+    
+    func fetchReplies() {
+        TweetService.shared.fetchReplies(forUser: user) { tweets in
+            self.replies = tweets.sorted(by: {$0.timestamp > $1.timestamp })
+            self.checkIfUserLikedTweets()
         }
     }
     
@@ -89,9 +98,15 @@ class ProfileController: UICollectionViewController {
         }
     }
     
-    func fetchReplies() {
-        TweetService.shared.fetchReplies(forUser: user) { tweets in
-            self.replies = tweets
+    func checkIfUserLikedTweets() {
+        self.tweets.forEach { tweet in
+            TweetService.shared.checkIfUserLikedTweet(tweet: tweet) { didLike in
+                guard didLike == true else { return }
+                
+                if let index = self.tweets.firstIndex(where: {$0.tweetID == tweet.tweetID}) {
+                    self.tweets[index].didLike = true
+                }
+            }
         }
     }
     
