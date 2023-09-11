@@ -31,7 +31,7 @@ struct ProfileHeaderViewModel {
     
     var usernameString: String { return "@\(user.username)" }
     
-    var bioString: String { return "Lorem Ipsum is simply dummy text of the printing and typesetting industry." }
+    var bioString: String? { return user.bio }
     
     var actionButtonTitle: String {
         if user.isCurrentUser {
