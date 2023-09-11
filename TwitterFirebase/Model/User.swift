@@ -10,10 +10,11 @@ import FirebaseAuth
 
 struct User {
     let email: String
-    let fullname: String
+    var fullname: String
     var profileImageUrl: URL?
-    let username: String
+    var username: String
     let uid: String
+    var bio: String?
     
     var isFollowed = false
     
@@ -26,6 +27,7 @@ struct User {
         self.email = dictionary["email"] as? String ?? ""
         self.fullname = dictionary["fullname"] as? String ?? ""
         self.username = dictionary["username"] as? String ?? ""
+        self.bio = dictionary["bio"] as? String ?? ""
         
         if let profileImageUrlString = dictionary["profileImageUrl"] as? String {
             guard let url = URL(string: profileImageUrlString) else { return }
