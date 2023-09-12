@@ -87,6 +87,13 @@ struct UserService {
         REF_USERS.child(currentUid).updateChildValues(value, withCompletionBlock: completion)
     }
     
+    func fetchUser(withUsername username: String, completion: @escaping(User) -> Void ) {
+        REF_USER_USERNAMES.child(username).observe(.value) { snapshot in
+            guard let uid = snapshot.value as? String else { return }
+            self.fetchUser(withUid: uid, completion: completion)
+        }
+    }
+    
     func updateProfileImage(image: UIImage, completion: @escaping(URL?) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.7) else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }

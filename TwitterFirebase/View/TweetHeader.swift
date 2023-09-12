@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import ActiveLabel
 
 protocol TweetHeaderDelegate: AnyObject {
     func showActionSheet()
     func handleProfileImageTapped(_ header: TweetHeader)
+    func handleFetchUser(withUsername username: String)
 }
 
 class TweetHeader: UICollectionReusableView {
@@ -52,11 +54,12 @@ class TweetHeader: UICollectionReusableView {
         return label
     }()
     
-    private let captionLabel: UILabel = {
-        let label = UILabel()
+    private let captionLabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0
-        label.text = "some test caption"
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
         return label
     }()
     
@@ -77,11 +80,12 @@ class TweetHeader: UICollectionReusableView {
         return button
     }()
     
-    private let replyLabel: UILabel = {
-        let label = UILabel()
+    private let replyLabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
-        label.text = "  ↳ replying to @username"
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
         return label
     }()
     
@@ -175,6 +179,8 @@ class TweetHeader: UICollectionReusableView {
         addSubview(actionStack)
         actionStack.centerX(inView: self)
         actionStack.anchor(top: statsView.bottomAnchor, paddingTop: 12)
+        
+        configureMentionHandler()
     }
     
     required init?(coder: NSCoder) {
@@ -235,5 +241,11 @@ class TweetHeader: UICollectionReusableView {
         
         replyLabel.isHidden = viewModel.shouldHideReplyLabel
         replyLabel.text = viewModel.replyText
+    }
+    
+    func configureMentionHandler() {
+        captionLabel.handleMentionTap { username in
+            self.delegate?.handleFetchUser(withUsername: username)
+        }
     }
 }

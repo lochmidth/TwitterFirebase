@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 private let cellIdentifier = "TweetCell"
 private let headerIdentifier = "ProfileHeader"
@@ -170,7 +171,14 @@ extension ProfileController {
 extension ProfileController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 350)
+        
+        var height: CGFloat = 300
+        
+        if user.bio != nil {
+            height += 50
+        }
+        
+        return CGSize(width: view.frame.width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -213,7 +221,7 @@ extension ProfileController: ProfileHeaderDelegate {
                 self.collectionView.reloadData()
                 self.view.layoutIfNeeded()
                 
-                NotificationService.shared.uploadNotification(type: .follow, user: self.user)
+                NotificationService.shared.uploadNotification(toUser: self.user, type: .follow)
             }
         }
     }
@@ -226,6 +234,19 @@ extension ProfileController: ProfileHeaderDelegate {
 //MARK: - EditProfileControllerDelegate
 
 extension ProfileController: EditProfileControllerDelegate {
+    func handleLogout() {
+        do {
+            try Auth.auth().signOut()
+            self.dismiss(animated: true)
+            let controller = MainTabController()
+            let nav = UINavigationController(rootViewController: controller)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
+        } catch let error {
+            print("DEBUG: \(error.localizedDescription)")
+        }
+    }
+    
     func controller(_ controller: EditProfileController, wantsToUpdate user: User) {
         controller.dismiss(animated: true)
         
