@@ -129,7 +129,7 @@ class ProfileHeader: UICollectionReusableView {
         let userDetailsStack = UIStackView(arrangedSubviews: [fullnameLabel, usernameLabel, bioLabel])
         userDetailsStack.axis = .vertical
         userDetailsStack.distribution = .fillProportionally
-        userDetailsStack.spacing = 6
+        userDetailsStack.spacing = 4
         
         addSubview(userDetailsStack)
         userDetailsStack.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, right: rightAnchor,

@@ -12,6 +12,8 @@
 	<string>776547895249</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>BUNDLE_ID</key>
 	<string>com.alphanogun.TwitterFirebase</string>
 	<key>PROJECT_ID</key>
@@ -19,15 +21,15 @@
 	<key>STORAGE_BUCKET</key>
 	<string>twitterfirebase-daa77.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:776547895249:ios:08a6e486e04e54dd1b02f0</string>
 	<key>DATABASE_URL</key>

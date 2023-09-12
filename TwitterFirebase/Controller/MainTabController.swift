@@ -8,9 +8,16 @@
 import UIKit
 import FirebaseAuth
 
+enum ActionButtonConfiguration {
+    case tweet
+    case message
+}
+
 class MainTabController: UITabBarController {
     
     //MARK: - Properties
+    
+    private var buttonConfig: ActionButtonConfiguration = .tweet
     
     var user: User? {
         didSet {
@@ -35,13 +42,16 @@ class MainTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        logUserOut()
 //        view.backgroundColor = .white
         fetchUser()
         authenticateUserAndConfigureUI()
-        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+        
     //MARK: - API
     
     func fetchUser() {
@@ -63,26 +73,29 @@ class MainTabController: UITabBarController {
         }
     }
     
-    func logUserOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch let error {
-            print("DEBUG: \(error.localizedDescription)")
-        }
-    }
+    
     
     //MARK: - Actions
     
     @objc func handleActionButtonTapped() {
-        guard let user = user else { return }
-        let controller = UINavigationController(rootViewController: UploadTweetController(user: user, config: .tweet))
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true)
+        
+        switch buttonConfig {
+        case .tweet:
+            guard let user = user else { return }
+            let controller = UINavigationController(rootViewController: UploadTweetController(user: user, config: .tweet))
+            controller.modalPresentationStyle = .fullScreen
+            present(controller, animated: true)
+        case .message:
+            showMessage(withTitle: "Oops!", message: "DMs are work in progress...")
+        }
     }
     
     //MARK: - Helpers
     
     func configureUI() {
+        
+        self.delegate = self
+
         
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -122,8 +135,16 @@ class MainTabController: UITabBarController {
 
 extension MainTabController: AuthenticationDelegate {
     func authenticationDidComplete() {
-        //        showLoader(false)
         fetchUser()
         self.dismiss(animated: true)
+    }
+}
+
+extension MainTabController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let index = viewControllers?.firstIndex(of: viewController)
+        let imageName = index == 3 ? "ic_mail_outline_white_2x-1" : "new_tweet"
+        actionButton.setImage(UIImage(named: imageName), for: .normal)
+        buttonConfig = index == 3 ? .message : .tweet
     }
 }
